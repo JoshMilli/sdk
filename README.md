@@ -13,7 +13,7 @@ npm i @orionprotocol/sdk
 
 ## High level methods
 
-### Easy start
+### Wallet and chain initialization
 
 ```ts
 // Node.js
@@ -25,17 +25,14 @@ const chain = process.env.CHAIN; // "56" or "bsc"
 const env = process.env.ENV; // production
 const privateKey = process.env.PRIVATE_KEY; // 0x...
 
-if (!chain) throw new Error("CHAIN is required");
-if (!env) throw new Error("ENV is required");
-if (!privateKey) throw new Error("PRIVATE_KEY is required");
-
 const wallet = new Wallet(privateKey);
 // OrionUnit is chain-in-environment abstraction
+//Create an instance of OrionUnit, which has access to terminal functions.
 const orionUnit = new OrionUnit(chain, env);
 ```
 
 ```ts
-// UI
+//If using Metamask UI
 
 import { OrionUnit } from "@orionprotocol/sdk";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -67,7 +64,7 @@ detectEthereumProvider().then((provider) => {
 orionUnit.exchange.withdraw({
   amount: 435.275,
   asset: "USDT",
-  signer: wallet, // or signer when UI
+  signer: wallet, // or 'signer' when using Metamask module.
 });
 ```
 
@@ -81,7 +78,9 @@ orionUnit.exchange.deposit({
 });
 ```
 
-#### Make swap market
+#### Swap Function
+
+//Example of a swap
 
 ```ts
 orionUnit.exchange
@@ -92,7 +91,7 @@ orionUnit.exchange
     feeAsset: "ORN",
     amount: 23.89045345,
     slippagePercent: 1,
-    signer: wallet, // or signer when UI
+    signer: wallet, // or 'signer' when using Metamask module.
     options: {
       logger: console.log,
       // Set it to true if you want the issues associated with
@@ -100,7 +99,7 @@ orionUnit.exchange
       autoApprove: true,
     },
   })
-  .then(console.log);
+  .then(console.log); //Output the status and transaction details after a swap.
 ```
 
 #### Add liquidity
@@ -171,6 +170,7 @@ const pairsList = await simpleFetch(orionUnit.orionAggregator.getPairsList)();
 
 ### Get swap info
 
+//Example of getting swap data (dummy swap)
 ```ts
 import { simpleFetch } from '@orionprotocol/sdk';
 
